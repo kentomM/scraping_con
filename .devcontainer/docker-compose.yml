@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  python:
+    build: ./python
+    working_dir: /workspace/src
+    volumes:
+      - "../src:/workspace/src"
+      - "../tmp:/workspace/tmp"
+    tty: true
