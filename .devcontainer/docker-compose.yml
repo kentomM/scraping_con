@@ -1,10 +1,18 @@
 version: '3'
 
 services:
-  python:
-    build: ./python
+  selenium:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - 4444:4444
+      - 7900:7900
+    shm_size: "2gb"
+  app:
+    build: ./app
     working_dir: /workspace/src
     volumes:
       - "../src:/workspace/src"
       - "../tmp:/workspace/tmp"
     tty: true
+    depends_on:
+      - selenium
