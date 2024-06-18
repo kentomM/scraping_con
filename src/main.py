@@ -32,13 +32,13 @@ try:
     pager = Select(dropdown)
     page_values = [option.get_attribute("value") for option in pager.options]
     
-    for value in page_values[:2]:
+    for value in page_values:
         # ページを移動
         driver.implicitly_wait(10)
         dropdown = driver.find_element(By.ID, 'pageListNo1')
+        time.sleep(2)
         pager = Select(dropdown)
         pager.select_by_value(value)
-        time.sleep(1)
         
         # 業者情報をCSVに追記
         for i in range(const.CONDITION_DISPLAY_COUNT):
@@ -49,13 +49,12 @@ try:
             # 必要な情報を取得
             driver.implicitly_wait(10)
             html = driver.page_source
-            time.sleep(1)
             vendor = vendor_info.parse(html)
             # CSVに書き込み
             export_csv.write_row(path, vendor)
             # サーバー負荷を考え1秒待機
+            time.sleep(2)
             driver.back()
-            time.sleep(1)
             
 finally:        
     driver.quit()
