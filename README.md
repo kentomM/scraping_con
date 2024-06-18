@@ -11,5 +11,9 @@
 1. VSCodeをインストールする
 2. DevContainerを起動する
 
+# 使用方法
+`const.py`の都道府県番号を対象のものに変更する。
+`main.py`を実行する。
+
 # 参考資料
 - [建設業者・宅建業者等企業情報検索システム](https://etsuran2.mlit.go.jp/TAKKEN/kensetuKensaku.do?outPutKbn=1)

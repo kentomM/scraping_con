@@ -1,6 +1,8 @@
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from modules import const, search_setting, vendor_info, export_csv
 
 options = webdriver.ChromeOptions()
 driver = webdriver.Remote(
@@ -8,24 +10,52 @@ driver = webdriver.Remote(
     options = options
 )
 
-driver.implicitly_wait(10)
+try:
+    driver.implicitly_wait(10)
 
-url = 'https://etsuran2.mlit.go.jp/TAKKEN/kensetuKensaku.do?outPutKbn=1' # テストでアクセスするURLを指定
-driver.get(url)
+    url = 'https://etsuran2.mlit.go.jp/TAKKEN/kensetuKensaku.do?outPutKbn=1'
+    driver.get(url)
 
-# 検索条件: 本店
-dropdown = driver.find_element(By.ID, 'choice')
-select = Select(dropdown)
-select.select_by_value('1')
+    # 検索条件を指定
+    search_setting.set_condition(driver)
 
-# 検索条件: 都道府県
-dropdown = driver.find_element(By.ID, 'kenCode')
-select = Select(dropdown)
-select.select_by_value('13')
+    # 「検索」ボタンを押す
+    el = driver.find_element(By.XPATH, '//*[@id="input"]/div[6]/div[5]/img')
+    el.click()
 
-# 「検索」ボタンを押す
-el = driver.find_element(By.XPATH, '//*[@id="input"]/div[6]/div[5]/img')
-el.click()
+    # 書き込み先CSVを用意
+    path = f'./tmp/vendors_{const.CONDITION_PREFECTURE}.csv'
+    export_csv.create_file(path, const.CSV_HEADER)
 
-driver.save_screenshot('test.png') # アクセスした先でスクリーンショットを取得
-driver.quit()
+    # 次のページがある限り繰り返し
+    dropdown = driver.find_element(By.ID, 'pageListNo1')
+    pager = Select(dropdown)
+    page_values = [option.get_attribute("value") for option in pager.options]
+    
+    for value in page_values[:2]:
+        # ページを移動
+        driver.implicitly_wait(10)
+        dropdown = driver.find_element(By.ID, 'pageListNo1')
+        pager = Select(dropdown)
+        pager.select_by_value(value)
+        time.sleep(1)
+        
+        # 業者情報をCSVに追記
+        for i in range(const.CONDITION_DISPLAY_COUNT):
+            # 詳細ページを開く
+            driver.implicitly_wait(10)
+            el = driver.find_element(By.XPATH, f'//*[@id="container_cont"]/table/tbody/tr[{i+2}]/td[4]/a')
+            el.click()
+            # 必要な情報を取得
+            driver.implicitly_wait(10)
+            html = driver.page_source
+            time.sleep(1)
+            vendor = vendor_info.parse(html)
+            # CSVに書き込み
+            export_csv.write_row(path, vendor)
+            # サーバー負荷を考え1秒待機
+            driver.back()
+            time.sleep(1)
+            
+finally:        
+    driver.quit()

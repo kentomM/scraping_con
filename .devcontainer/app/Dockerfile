@@ -9,4 +9,5 @@ RUN pip install -r requirements.txt
 # 作業ディレクトリの指定
 WORKDIR /workspace
 
+# 環境変数
 ENV PYTHONPATH=/workspace/src

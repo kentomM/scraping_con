@@ -9,7 +9,6 @@ services:
     shm_size: "2gb"
   app:
     build: ./app
-    working_dir: /workspace/src
     volumes:
       - "../src:/workspace/src"
       - "../tmp:/workspace/tmp"
