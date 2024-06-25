@@ -16,6 +16,7 @@
 `main.py`を実行する。
 
 再開する場合、重複や抜け漏れがないようにCSVファイルのデータを削除してから再開すること。
+Port:7900のSeleniumのモニターのパスワードは`secret`
 
 # 参考資料
 - [建設業者・宅建業者等企業情報検索システム](https://etsuran2.mlit.go.jp/TAKKEN/kensetuKensaku.do?outPutKbn=1)
