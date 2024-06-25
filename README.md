@@ -15,5 +15,7 @@
 `const.py`の都道府県番号を対象のものに変更する。
 `main.py`を実行する。
 
+再開する場合、重複や抜け漏れがないようにCSVファイルのデータを削除してから再開すること。
+
 # 参考資料
 - [建設業者・宅建業者等企業情報検索システム](https://etsuran2.mlit.go.jp/TAKKEN/kensetuKensaku.do?outPutKbn=1)
