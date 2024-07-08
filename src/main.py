@@ -21,6 +21,7 @@ def move_page(target_page: int) -> None:
     
     driver.implicitly_wait(10)
     if error.is_error_page(driver.page_source):
+        print("Error displayed. Retry after 10 seconds.")
         time.sleep(1)
         driver.back()
         time.sleep(10)
@@ -70,6 +71,8 @@ try:
         
         # 業者情報をCSVに追記
         for i in range(const.CONDITION_DISPLAY_COUNT):
+            print("-"*20)
+            print(f"Processing to {value}/{page_values[-1]}:{i+1}件目, Count {(int(value)-1)*const.CONDITION_DISPLAY_COUNT+i+1}")
             # 詳細ページを開く
             open_detail_page(i+2)
             # 必要な情報を取得
@@ -82,6 +85,7 @@ try:
             time.sleep(2)
             driver.back()
             time.sleep(1)
-            
+except Exception as e:
+    print(e)
 finally:        
     driver.quit()
