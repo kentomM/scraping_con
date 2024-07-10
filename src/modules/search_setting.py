@@ -4,6 +4,7 @@ from selenium.webdriver.support.select import Select
 from modules import const
 
 def set_condition(driver):
+    driver.implicitly_wait(10)
     # 検索条件: 本店
     dropdown = driver.find_element(By.ID, 'choice')
     select = Select(dropdown)

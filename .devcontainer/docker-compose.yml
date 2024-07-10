@@ -12,6 +12,7 @@ services:
     volumes:
       - "../src:/workspace/src"
       - "../tmp:/workspace/tmp"
+      - "../.vscode:/workspace/.vscode"
     tty: true
     depends_on:
       - selenium

@@ -1,3 +1,7 @@
 {
-    "nuxt.isNuxtApp": false
+    "nuxt.isNuxtApp": false,
+    "code-runner.executorMap": {
+        "python": "python -u"
+    },
+    "code-runner.runInTerminal": true
 }

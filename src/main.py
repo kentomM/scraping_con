@@ -19,7 +19,11 @@ def move_page(target_page: int) -> None:
     pager = Select(dropdown)
     pager.select_by_value(target_page)
     
-    driver.implicitly_wait(10)
+    time.sleep(1)
+    if error.is_confirm_page(driver.page_source):
+        print("Please press enter after confirm page.")
+        input()
+        time.sleep(3)
     if error.is_error_page(driver.page_source):
         print("Error displayed. Retry after 10 seconds.")
         time.sleep(1)
@@ -34,25 +38,53 @@ def open_detail_page(target: int) -> None:
     el = driver.find_element(By.XPATH, f'//*[@id="container_cont"]/table/tbody/tr[{target}]/td[4]/a')
     el.click()
     
-    driver.implicitly_wait(10)
+    time.sleep(1)
+    if error.is_confirm_page(driver.page_source):
+        print("Please press enter after confirm page.")
+        input()
+        time.sleep(3)
     if error.is_error_page(driver.page_source):
         driver.back()
         time.sleep(20)
         open_detail_page(target)
     return
 
+def return_vendor_list() -> None:
+    pancuz = driver.find_element(By.XPATH, '//*[@id="pancuz"]/p[1]/a[2]')
+    pancuz.click()
+    
+    time.sleep(3)
+    if error.is_confirm_page(driver.page_source):
+        print("Please press enter after confirm page.")
+        input()
+    if error.is_error_page(driver.page_source):
+        driver.back()
+        time.sleep(20)
+        return_vendor_list()
+    return 
+
 try:
     driver.implicitly_wait(10)
 
     url = 'https://etsuran2.mlit.go.jp/TAKKEN/kensetuKensaku.do?outPutKbn=1'
     driver.get(url)
-
+    
+    time.sleep(1)
+    if error.is_confirm_page(driver.page_source):
+        print("Please press enter after confirm page.")
+        input()
     # 検索条件を指定
     search_setting.set_condition(driver)
 
     # 「検索」ボタンを押す
     el = driver.find_element(By.XPATH, '//*[@id="input"]/div[6]/div[5]/img')
     el.click()
+    
+    time.sleep(1)
+    if error.is_confirm_page(driver.page_source):
+        print("Please press enter after confirm page.")
+        input()
+
 
     # 書き込み先CSVを用意
     path = f'./tmp/vendors_{const.CONDITION_PREFECTURE}.csv'
@@ -83,8 +115,8 @@ try:
             export_csv.write_row(path, vendor)
             # サーバー負荷を考え待機
             time.sleep(2)
-            driver.back()
-            time.sleep(1)
+            return_vendor_list()
+            time.sleep(2)
 except Exception as e:
     print(e)
 finally:        
