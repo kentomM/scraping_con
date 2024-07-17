@@ -1,11 +1,11 @@
 # 埼玉: 11 -> done
 # 千葉: 12 -> done
 # 東京: 13 -> done
-# 神奈川: 14 -> 1~ 
+# 神奈川: 14 -> 
 CONDITION_PREFECTURE = '14'         # 対象の都道府県番号
-CONDITION_MIDDLE_PAGE = '1'       # 開始するページ番号  csvの行数/表示件数で算出
+CONDITION_START_NO = 102312           # 続きから始める場合、CSVの入力された最後の行数を入れる。不要な場合は0。
 CONDITION_DISPLAY_COUNT = 50        # 検索結果の表示件数
-NUM_PAGE_TO_PROCESS = 600          # 1度の実行でクローリングするページ数
+NUM_PAGE_TO_PROCESS = 50          # 1度の実行でクローリングするページ数
 CSV_HEADER = [                      # CSVファイルのヘッダー
     '許可番号',
     '有効期間',
